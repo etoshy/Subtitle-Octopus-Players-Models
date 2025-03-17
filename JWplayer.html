@@ -58,13 +58,13 @@
             autostart: false,
             tracks: [
                 {
-                    file: "subtitles/jojo1.ass",
+                    file: "Subtitle-Octopus-Players-Models/subtitles/jojo1.ass",
                     label: "Select Subtitle 1",
                     kind: "captions",
                     default: true
                 },
                 {
-                    file: "subtitles/test.ass",
+                    file: "Subtitle-Octopus-Players-Models/subtitles/test.ass",
                     label: "Select Subtitle 2",
                     kind: "captions",
                     default: false
@@ -86,8 +86,8 @@
                 window.SubtitlesOctopusOnLoad = function () {
                     var options = {
                         video: video,
-                        subUrl:  '/subtitles/jojo1.ass', // Inicialmente carregando a primeira legenda
-                        fonts: ['/fonts/Arial.ttf', '/fonts/TimesNewRoman.ttf'],
+                        subUrl:  'Subtitle-Octopus-Players-Models/subtitles/jojo1.ass', // Inicialmente carregando a primeira legenda
+                        fonts: ['Subtitle-Octopus-Players-Models/fonts/Arial.ttf', '/Subtitle-Octopus-Players-Models/fonts/TimesNewRoman.ttf'],
                         workerUrl: 'assets/js/subtitles-octopus-worker.js',
                         legacyWorkerUrl: 'assets/js/subtitles-octopus-worker-legacy.js'
                     };
@@ -116,9 +116,9 @@
 
             // Atualiza a legenda com base no arquivo associado ao rótulo
             if (currentTrack.label === "Select Subtitle 1") {
-                changeSubtitle( '/subtitles/jojo1.ass');
+                changeSubtitle( '/Subtitle-Octopus-Players-Models/subtitles/jojo1.ass');
             } else if (currentTrack.label === "Select Subtitle 2") {
-                changeSubtitle( '/subtitles/test.ass');
+                changeSubtitle( '/Subtitle-Octopus-Players-Models/subtitles/test.ass');
             } else if (currentTrack.label === "Off") {
                 window.octopusInstance.freeTrack(); // Desliga as legendas
             }
