@@ -30,8 +30,8 @@
       src="https://upload.wikimedia.org/wikipedia/commons/transcoded/a/ab/Caminandes_3_-_Llamigos_-_Blender_Animated_Short.webm/Caminandes_3_-_Llamigos_-_Blender_Animated_Short.webm.240p.vp9.webm"
       type="video/webm" size="240">
 
-    <track kind="captions" label="Select Jojo1 Subtitle" srclang="en" src="subtitles/jojo1.ass" default>
-    <track kind="captions" label="Select AOT3P2_OP Subtitle" srclang="de" src="subtitles/test.ass">
+    <track kind="captions" label="Select Jojo1 Subtitle" srclang="en" src="/Subtitle-Octopus-Players-Models/subtitles/jojo1.ass" default>
+    <track kind="captions" label="Select AOT3P2_OP Subtitle" srclang="de" src="/Subtitle-Octopus-Players-Models/subtitles/test.ass">
   </video>
 
   <button id="changeSubtitleBtn1">Select Jojo1 Subtitle</button>
@@ -68,7 +68,7 @@
         var options = {
           video: video,
           subUrl: subtitleUrl,
-          fonts: ['/fonts/Arial.ttf', '/fonts/TimesNewRoman.ttf'],
+          fonts: ['/Subtitle-Octopus-Players-Models/fonts/Arial.ttf', /Subtitle-Octopus-Players-Models/fonts/TimesNewRoman.ttf'],
           workerUrl: './assets/js/subtitles-octopus-worker.js',
           legacyWorkerUrl: './assets/js/subtitles-octopus-worker-legacy.js'
         };
@@ -101,9 +101,9 @@
 
       const handleSubtitleChange = (label) => {
         if (label === 'Select Jojo1 Subtitle') {
-          initializeSubtitlesOctopus('/subtitles/jojo1.ass');
+          initializeSubtitlesOctopus('/Subtitle-Octopus-Players-Models/subtitles/jojo1.ass');
         } else if (label === 'Select AOT3P2_OP Subtitle') {
-          initializeSubtitlesOctopus('/subtitles/test.ass');
+          initializeSubtitlesOctopus('/Subtitle-Octopus-Players-Models/subtitles/test.ass');
         }
       };
 
@@ -139,11 +139,11 @@
       });
 
       function changeSubtitle1() {
-        initializeSubtitlesOctopus('/subtitles/jojo1.ass');
+        initializeSubtitlesOctopus('/Subtitle-Octopus-Players-Models/subtitles/jojo1.ass');
       }
 
       function changeSubtitle2() {
-        initializeSubtitlesOctopus('/subtitles/test.ass');
+        initializeSubtitlesOctopus('/Subtitle-Octopus-Players-Models/subtitles/test.ass');
       }
 
       document.getElementById('changeSubtitleBtn1').addEventListener('click', changeSubtitle1);
