@@ -68,7 +68,7 @@
         var options = {
           video: video,
           subUrl: subtitleUrl,
-          fonts: ['fonts/Arial.ttf', fonts/TimesNewRoman.ttf'],
+          fonts: ['/fonts/Arial.ttf', '/fonts/TimesNewRoman.ttf'],
           workerUrl: './assets/js/subtitles-octopus-worker.js',
           legacyWorkerUrl: './assets/js/subtitles-octopus-worker-legacy.js'
         };
@@ -101,9 +101,9 @@
 
       const handleSubtitleChange = (label) => {
         if (label === 'Select Jojo1 Subtitle') {
-          initializeSubtitlesOctopus('subtitles/jojo1.ass');
+          initializeSubtitlesOctopus('/subtitles/jojo1.ass');
         } else if (label === 'Select AOT3P2_OP Subtitle') {
-          initializeSubtitlesOctopus('subtitles/test.ass');
+          initializeSubtitlesOctopus('/subtitles/test.ass');
         }
       };
 
@@ -139,11 +139,11 @@
       });
 
       function changeSubtitle1() {
-        initializeSubtitlesOctopus('subtitles/jojo1.ass');
+        initializeSubtitlesOctopus('/subtitles/jojo1.ass');
       }
 
       function changeSubtitle2() {
-        initializeSubtitlesOctopus('subtitles/test.ass');
+        initializeSubtitlesOctopus('/subtitles/test.ass');
       }
 
       document.getElementById('changeSubtitleBtn1').addEventListener('click', changeSubtitle1);
