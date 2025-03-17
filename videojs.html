@@ -22,8 +22,8 @@
         <div id="main" class="container container-body">
             <video id="my-video" class="video-js vjs-default-skin" width="800" height="480" controls preload="none">
                 <source src="https://upload.wikimedia.org/wikipedia/commons/transcoded/a/ab/Caminandes_3_-_Llamigos_-_Blender_Animated_Short.webm/Caminandes_3_-_Llamigos_-_Blender_Animated_Short.webm.360p.vp9.webm" type="video/webm">
-                <track src="/subtitles/jojo1.ass" kind="subtitles" srclang="en" label="English">
-                <track src="/subtitles/railgun_op.ass" kind="subtitles" srclang="jp" label="Test Lang">
+                <track src="/Subtitle-Octopus-Players-Models/subtitles/jojo1.ass" kind="subtitles" srclang="en" label="English">
+                <track src="/Subtitle-Octopus-Players-Models/subtitles/railgun_op.ass" kind="subtitles" srclang="jp" label="Test Lang">
             </video>
             <script>
                 document.addEventListener('DOMContentLoaded', function () {
@@ -48,10 +48,10 @@
                                 var options = {
                                     video: player.el().querySelector('video'),
                                     subUrl: subUrl,
-                                    fonts: ['/fonts/CabinCondensed-Regular.ttf', 'https://jellyfin.github.io/JavascriptSubtitlesOctopus/fonts/SourceSansPro-SemiBold.ttf'],
+                                    fonts: ['/Subtitle-Octopus-Players-Models/fonts/CabinCondensed-Regular.ttf', 'https://jellyfin.github.io/JavascriptSubtitlesOctopus/fonts/SourceSansPro-SemiBold.ttf'],
                                     debug: true,
-                                    workerUrl: '/assets/js/subtitles-octopus-worker.js',
-                                    legacyWorkerUrl: '/assets/js/subtitles-octopus-worker-legacy.js'
+                                    workerUrl: '/Subtitle-Octopus-Players-Models/assets/js/subtitles-octopus-worker.js',
+                                    legacyWorkerUrl: '/Subtitle-Octopus-Players-Models/assets/js/subtitles-octopus-worker-legacy.js'
                                 };
                                 window.octopusInstance = new SubtitlesOctopus(options);
                             }
