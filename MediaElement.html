@@ -20,8 +20,8 @@
         <div id="main" class="container container-body">
             <video width="800" height="480" controls="controls" preload="none">
                 <source type="video/webm" src="https://upload.wikimedia.org/wikipedia/commons/transcoded/a/ab/Caminandes_3_-_Llamigos_-_Blender_Animated_Short.webm/Caminandes_3_-_Llamigos_-_Blender_Animated_Short.webm.360p.vp9.webm" />
-                <track src="/subtitles/railgun_op.ass" srclang="en" label="English" kind="subtitles" type="application/x-ass">
-                <track src="/subtitles/jojo1.ass" srclang="jp" label="Test Lang" kind="subtitles" type="application/x-ass">
+                <track src="/Subtitle-Octopus-Players-Models/subtitles/railgun_op.ass" srclang="en" label="English" kind="subtitles" type="application/x-ass">
+                <track src="/Subtitle-Octopus-Players-Models/subtitles/jojo1.ass" srclang="jp" label="Test Lang" kind="subtitles" type="application/x-ass">
             </video>
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mediaelement/4.2.12/mediaelementplayer.min.css" integrity="sha256-ji1bfJaTGnyscoc7LzcV9yNJy5vGKJ0frO3KJo1oaGQ=" crossorigin="anonymous" />
             <script src="https://cdnjs.cloudflare.com/ajax/libs/mediaelement/4.2.12/mediaelement-and-player.min.js" integrity="sha256-z7JbZVaNbNzLvOCFHUNrjqnZRojZbRAxgr4KU2qL0qc=" crossorigin="anonymous"></script>
@@ -42,7 +42,7 @@
                                     var options = {
                                         video: video,
                                         subUrl: subUrl,
-                                        fonts: [ '/fonts/CabinCondensed-Regular.ttf', 'https://jellyfin.github.io/JavascriptSubtitlesOctopus/fonts/SourceSansPro-SemiBold.ttf'],
+                                        fonts: [ '/Subtitle-Octopus-Players-Models/fonts/CabinCondensed-Regular.ttf', 'https://jellyfin.github.io/JavascriptSubtitlesOctopus/fonts/SourceSansPro-SemiBold.ttf'],
                                         debug: true,
                                         workerUrl: '/assets/js/subtitles-octopus-worker.js',
                                         legacyWorkerUrl: '/assets/js/subtitles-octopus-worker-legacy.js'
