@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="referrer" content="no-referrer" />
+    <link rel="shortcut icon" href="./favicon.ico?v=wAOz4X2G7G">
+    <link integrity="" rel="stylesheet" href="./assets/css/bootstrap.min.css">
+    <link href="https://vjs.zencdn.net/7.20.3/video-js.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <script src="https://vjs.zencdn.net/7.20.3/video.js"></script>
+    <script src="./assets/js/subtitles-octopus.js"></script>
+    <script src="./assets/js/main.js"></script>
+</head>
+
+<body>
+    <div id="content" style="padding-top: 25px;">
+        <div id="main" class="container container-body">
+            <video id="my-video" class="video-js vjs-default-skin" width="800" height="480" controls preload="none">
+                <source src="https://upload.wikimedia.org/wikipedia/commons/transcoded/a/ab/Caminandes_3_-_Llamigos_-_Blender_Animated_Short.webm/Caminandes_3_-_Llamigos_-_Blender_Animated_Short.webm.360p.vp9.webm" type="video/webm">
+                <track src="/subtitles/jojo1.ass" kind="subtitles" srclang="en" label="English">
+                <track src="/subtitles/railgun_op.ass" kind="subtitles" srclang="jp" label="Test Lang">
+            </video>
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    var player = videojs('my-video');
+
+                    player.on('texttrackchange', function () {
+                        var tracks = player.textTracks();
+                        var activeTrack = null;
+                        for (var i = 0; i < tracks.length; i++) {
+                            if (tracks[i].mode === 'showing') {
+                                activeTrack = tracks[i];
+                                break;
+                            }
+                        }
+
+                        if (activeTrack) {
+                            var subUrl = activeTrack.src;
+
+                            if (window.octopusInstance) {
+                                window.octopusInstance.setTrackByUrl(subUrl);
+                            } else if (SubtitlesOctopus) {
+                                var options = {
+                                    video: player.el().querySelector('video'),
+                                    subUrl: subUrl,
+                                    fonts: ['/fonts/CabinCondensed-Regular.ttf', 'https://jellyfin.github.io/JavascriptSubtitlesOctopus/fonts/SourceSansPro-SemiBold.ttf'],
+                                    debug: true,
+                                    workerUrl: '/assets/js/subtitles-octopus-worker.js',
+                                    legacyWorkerUrl: '/assets/js/subtitles-octopus-worker-legacy.js'
+                                };
+                                window.octopusInstance = new SubtitlesOctopus(options);
+                            }
+                        } else {
+                            if (SubtitlesOctopus || window.octopusInstance) {
+                                console.log('Disable Track');
+                                window.octopusInstance.freeTrack();
+                            }
+                        }
+                    });
+                });
+            </script>
+        </div>
+    </div>
+</body>
+
+</html>

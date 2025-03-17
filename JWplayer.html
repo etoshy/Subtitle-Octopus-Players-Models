@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>JWPlayer with SubtitlesOctopus</title>
+    <meta name="robots" content="noindex" />
+    <meta name="GOOGLEBOT" content="NOINDEX" />
+    <meta name="referrer" content="never">
+    <meta http-equiv="X-UA-Compatible" content="IE=11" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <link href="https://cdn.rawgit.com/ufilestorage/a/master/skins/jw-logo-bar.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="https://cdn.rawgit.com/ufilestorage/a/master/jquery-2.2.3.min.js"></script>
+    <script src="https://ssl.p.jwpcdn.com/player/v/8.13.0/jwplayer.js"></script>
+    <script src="./assets/js/subtitles-octopus.js"></script>
+    <style type="text/css">
+        body,
+        html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            align-items: center;
+        }
+
+        #player-container {
+            width: 80%;
+            max-width: 800px;
+            aspect-ratio: 16 / 9;
+            position: relative;
+        }
+
+        #uplay_player {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="player-container">
+        <div id="uplay_player"></div>
+    </div>
+    <script type="text/javascript">
+        jwplayer.key = "64HPbvSQorQcd52B8XFuhMtEoitbvY/EXJmMBfKcXZQU2Rnn";
+
+        var videoPlayer = jwplayer("uplay_player");
+        videoPlayer.setup({
+            sources: [{
+                file: "https://mirror.clarkson.edu/blender/demo/movies/BBB/bbb_sunflower_1080p_30fps_normal.mp4"
+            }],
+            width: "100%",
+            height: "100%",
+            controls: true,
+            displaytitle: false,
+            primary: "html5",
+            autostart: false,
+            tracks: [
+                {
+                    file: "subtitles/jojo1.ass",
+                    label: "Select Subtitle 1",
+                    kind: "captions",
+                    default: true
+                },
+                {
+                    file: "subtitles/test.ass",
+                    label: "Select Subtitle 2",
+                    kind: "captions",
+                    default: false
+                }
+            ],
+            captions: {
+                color: "#FFFF00",
+                fontSize: 14,
+                edgeStyle: "uniform",
+                backgroundOpacity: 0,
+            },
+        });
+
+        videoPlayer.on('ready', function () {
+
+            // Aguardar o JWPlayer criar o elemento de vídeo
+            setTimeout(function () {
+                var video = document.querySelector("#uplay_player video");
+                window.SubtitlesOctopusOnLoad = function () {
+                    var options = {
+                        video: video,
+                        subUrl:  '/subtitles/jojo1.ass', // Inicialmente carregando a primeira legenda
+                        fonts: ['/fonts/Arial.ttf', '/fonts/TimesNewRoman.ttf'],
+                        workerUrl: 'assets/js/subtitles-octopus-worker.js',
+                        legacyWorkerUrl: 'assets/js/subtitles-octopus-worker-legacy.js'
+                    };
+                    window.octopusInstance = new SubtitlesOctopus(options);
+                };
+
+                if (typeof SubtitlesOctopus !== 'undefined') {
+                    SubtitlesOctopusOnLoad();
+                }
+            }, 1000); // Pode ser necessário ajustar o tempo de espera
+        });
+
+        // Função para alterar a legenda
+        function changeSubtitle(url) {
+            if (window.octopusInstance) {
+                window.octopusInstance.freeTrack(); // Para a legenda atual
+                window.octopusInstance.setTrackByUrl(url); // Inicia a nova legenda
+            }
+        }
+
+        // Event listener to change subtitle and log the selected caption label
+        videoPlayer.on('captionsChanged', function (event) {
+            var tracks = videoPlayer.getCaptionsList();
+            var currentTrack = tracks[event.track];
+            console.log('Selected caption label: ' + currentTrack.label);
+
+            // Atualiza a legenda com base no arquivo associado ao rótulo
+            if (currentTrack.label === "Select Subtitle 1") {
+                changeSubtitle( '/subtitles/jojo1.ass');
+            } else if (currentTrack.label === "Select Subtitle 2") {
+                changeSubtitle( '/subtitles/test.ass');
+            } else if (currentTrack.label === "Off") {
+                window.octopusInstance.freeTrack(); // Desliga as legendas
+            }
+        });
+
+        videoPlayer.addButton(
+            "https://raw.githubusercontent.com/ufilestorage/img/master/download.png",
+            "Download Movie",
+            function () {
+                window.open(videoPlayer.getPlaylistItem()["file"], "_blank").blur();
+            },
+            "download"
+        );
+    </script>
+</body>
+
+</html>

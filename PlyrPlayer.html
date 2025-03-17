@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Plyr with Quality Selector and Subtitles</title>
+
+  <!-- Plyr CSS -->
+  <link rel="stylesheet" href="https://cdn.plyr.io/3.6.8/plyr.css">
+
+  <!-- Plyr JavaScript -->
+  <script src="https://cdn.plyr.io/3.6.8/plyr.polyfilled.js"></script>
+  <!-- SubtitlesOctopus JavaScript -->
+  <script src="./assets/js/subtitles-octopus.js"></script>
+</head>
+
+<body>
+  <video id="player" controls crossorigin="anonymous" poster="https://ancdn.fancaps.net/18064786.jpg">
+    <source
+      src="https://upload.wikimedia.org/wikipedia/commons/transcoded/a/ab/Caminandes_3_-_Llamigos_-_Blender_Animated_Short.webm/Caminandes_3_-_Llamigos_-_Blender_Animated_Short.webm.720p.vp9.webm"
+      type="video/webm" size="720">
+    <source
+      src="https://upload.wikimedia.org/wikipedia/commons/transcoded/a/ab/Caminandes_3_-_Llamigos_-_Blender_Animated_Short.webm/Caminandes_3_-_Llamigos_-_Blender_Animated_Short.webm.480p.vp9.webm"
+      type="video/webm" size="480">
+    <source
+      src="https://upload.wikimedia.org/wikipedia/commons/transcoded/a/ab/Caminandes_3_-_Llamigos_-_Blender_Animated_Short.webm/Caminandes_3_-_Llamigos_-_Blender_Animated_Short.webm.360p.vp9.webm"
+      type="video/webm" size="360">
+    <source
+      src="https://upload.wikimedia.org/wikipedia/commons/transcoded/a/ab/Caminandes_3_-_Llamigos_-_Blender_Animated_Short.webm/Caminandes_3_-_Llamigos_-_Blender_Animated_Short.webm.240p.vp9.webm"
+      type="video/webm" size="240">
+
+    <track kind="captions" label="Select Jojo1 Subtitle" srclang="en" src="subtitles/jojo1.ass" default>
+    <track kind="captions" label="Select AOT3P2_OP Subtitle" srclang="de" src="subtitles/test.ass">
+  </video>
+
+  <button id="changeSubtitleBtn1">Select Jojo1 Subtitle</button>
+  <button id="changeSubtitleBtn2">Select AOT3P2_OP Subtitle</button>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const player = new Plyr('#player', {
+        captions: { active: true, update: true, language: 'auto' },
+        settings: ['quality', 'captions'],
+        quality: {
+          default: 480,
+          options: [720, 480, 360, 240],
+          forced: true,
+          onChange: e => console.log(e),
+        },
+        i18n: {
+          qualityLabel: {
+            720: '720P',
+            480: '480P',
+            360: '360P',
+            240: '240P',
+          }
+        }
+      });
+
+      let selectedSubtitleLabel = '';
+
+      const initializeSubtitlesOctopus = (subtitleUrl) => {
+        var video = document.getElementById('player');
+        if (window.octopusInstance) {
+          window.octopusInstance.freeTrack();
+        }
+        var options = {
+          video: video,
+          subUrl: subtitleUrl,
+          fonts: ['/fonts/Arial.ttf', '/fonts/TimesNewRoman.ttf'],
+          workerUrl: './assets/js/subtitles-octopus-worker.js',
+          legacyWorkerUrl: './assets/js/subtitles-octopus-worker-legacy.js'
+        };
+        window.octopusInstance = new SubtitlesOctopus(options);
+      };
+
+      const logSelectedSubtitle = () => {
+        const tracks = player.media.textTracks;
+        for (let i = 0; i < tracks.length; i++) {
+          if (tracks[i].mode === 'showing') {
+            console.log(`Selected subtitle label: ${tracks[i].label}`);
+            selectedSubtitleLabel = tracks[i].label;
+            handleSubtitleChange(selectedSubtitleLabel);
+          }
+        }
+      };
+
+      const updateTextTracks = () => {
+        const tracks = player.media.textTracks;
+        const currentLanguage = player.currentTrack;
+        for (let i = 0; i < tracks.length; i++) {
+          if (i === currentLanguage) {
+            tracks[i].mode = 'showing';
+          } else {
+            tracks[i].mode = 'disabled';
+          }
+        }
+        logSelectedSubtitle();
+      };
+
+      const handleSubtitleChange = (label) => {
+        if (label === 'Select Jojo1 Subtitle') {
+          initializeSubtitlesOctopus('/subtitles/jojo1.ass');
+        } else if (label === 'Select AOT3P2_OP Subtitle') {
+          initializeSubtitlesOctopus('/subtitles/test.ass');
+        }
+      };
+
+      player.on('languagechange', updateTextTracks);
+      player.on('ready', updateTextTracks);
+
+      player.on('captionsenabled', () => {
+        console.log('Captions enabled');
+        handleSubtitleChange(selectedSubtitleLabel);
+      });
+
+      player.on('captionsdisabled', () => {
+        console.log('Captions disabled');
+        if (window.octopusInstance) {
+          window.octopusInstance.freeTrack();
+        }
+      });
+
+      const events = [
+        'ready', 'play', 'pause', 'ended', 'timeupdate', 'seeking', 'seeked',
+        'ratechange', 'volumechange', 'captionsenabled', 'captionsdisabled',
+        'languagechange', 'qualitychange', 'enterfullscreen', 'exitfullscreen'
+      ];
+
+      events.forEach(event => {
+        player.on(event, e => console.log(`Event: ${event}`, e));
+      });
+
+      const video = document.getElementById('player');
+      video.textTracks.addEventListener('change', () => {
+        console.log('Text track change event');
+        logSelectedSubtitle();
+      });
+
+      function changeSubtitle1() {
+        initializeSubtitlesOctopus('/subtitles/jojo1.ass');
+      }
+
+      function changeSubtitle2() {
+        initializeSubtitlesOctopus('/subtitles/test.ass');
+      }
+
+      document.getElementById('changeSubtitleBtn1').addEventListener('click', changeSubtitle1);
+      document.getElementById('changeSubtitleBtn2').addEventListener('click', changeSubtitle2);
+    });
+  </script>
+</body>
+
+</html>
